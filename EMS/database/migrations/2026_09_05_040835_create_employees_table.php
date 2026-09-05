@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('gender');
             $table->string('title');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('emp_status');
             $table->string('emp_type');
             $table->foreignId('department_id')->constrained();
