@@ -48,28 +48,28 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         No
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         Gender
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         Title
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         Email
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         Status
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">
                         Department
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap sticky right-0 bg-gray-50 dark:bg-gray-700">
                         Action
                     </th>
                 </tr>
@@ -77,47 +77,42 @@
                 <tbody>
                 @forelse ($employees as $employee)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                        <td class="px-6 py-4">
-                            {{ $employees->firstItem() + $loop->index + ($employees->currentPage() - 1) * $employees->perPage() }}
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            {{ $employees->firstItem() + $loop->index }}
                         </td>
-                        <td class="px-6 py-4">
-                            {{ $employee->full_first_name }} {{ $employee->last_name  }}
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            {{ $employee->first_name }} {{ $employee->last_name }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-3 whitespace-nowrap">
                             {{ $employee->gender }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-3 max-w-[180px] truncate" title="{{ $employee->title }}">
                             {{ $employee->title }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-3 max-w-[220px] truncate" title="{{ $employee->email }}">
                             {{ $employee->email }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-3 whitespace-nowrap">
                             {{ $employee->emp_status }}
                         </td>
-                        <td class="px-6 py-4">
-                            {{ $employee->contract }}
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            {{ $employee->department?->dept_name ?? '-' }}
                         </td>
-                        <td class="px-6 py-4">
-                            {{ $employee->department }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $employee->jobdesc }}
-                        </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-3 sticky right-0 bg-white dark:bg-gray-800 shadow-[inset_1px_0_0_0_#e5e7eb]">
                             <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                  action="{{ route('employee.destroy', $employee) }}" method="POST">
+                                  action="{{ route('employee.destroy', $employee) }}" method="POST"
+                                  class="flex items-center gap-1 whitespace-nowrap">
 
                                 @csrf
                                 @method('DELETE')
                                 <a href="{{ route('employee.show', $employee) }}" id="{{ $employee->id }}-show-btn"
-                                   class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out">View</a>
+                                   class="inline-block px-3 py-1.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 transition duration-150 ease-in-out">View</a>
 
                                 <a href="{{ route('employee.edit', $employee) }}" id="{{ $employee->id }}-edit-btn"
-                                   class="inline-block px-6 py-2.5 bg-yellow-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-yellow-600 hover:shadow-lg focus:bg-yellow-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-700 active:shadow-lg transition duration-150 ease-in-out">Edit</a>
+                                   class="inline-block px-3 py-1.5 bg-yellow-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-yellow-600 transition duration-150 ease-in-out">Edit</a>
 
                                 <button type="submit"
-                                        class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                                        class="inline-block px-3 py-1.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 transition duration-150 ease-in-out"
                                         id="{{ $employee->id }}-delete-btn">Delete
                                 </button>
                             </form>
