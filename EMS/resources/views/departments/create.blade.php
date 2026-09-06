@@ -1,76 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Create New Department</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-</head>
+@section('title', 'New Department /// EMS')
+@section('masthead', 'New Unit')
+@section('doc-id', 'DOC / DEPT-006')
+@section('doc-meta', '/// FORM /// CREATE ///')
 
-<body>
-
-<div class="container mx-auto mt-10 mb-10 px-10">
-    <div class="grid grid-cols-8 gap-4 p-5">
-        <div class="col-span-4 mt-2">
-            <h1 class="text-3xl font-bold">
-                CREATE NEW DEPARTMENT
-            </h1>
-        </div>
-        <div class="col-span-4">
-
-        </div>
+@section('content')
+<div class="grid grid-cols-12 gap-4 items-end mb-5">
+    <div class="col-span-12">
+        <p class="font-micro text-[11px] mb-1"><span style="color: var(--red);">///</span> 006 /// UNIT REGISTRY</p>
+        <h2 class="font-macro" style="font-size: clamp(1.6rem, 3.5vw, 2.6rem);">Create New Department</h2>
     </div>
-    <div class="bg-white p-5 rounded shadow-sm">
-        <form action="{{ route('department.store') }}" method="POST">
-            @csrf
-
-            <div class="mb-5">
-                <label for="dept_name">Department Name</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="dept_name" value="{{ old('dept_name') }}" placeholder="e.g. Finance" required>
-
-                <!-- error message untuk dept_name -->
-                @error('dept_name')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mt-3">
-                <button type="submit"
-                        class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                    Save
-                </button>
-                <a href="{{ route('department.index') }}"
-                   class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">back</a>
-            </div>
-
-        </form>
-
-    </div>
-
 </div>
 
+<div class="border-2 border-black bg-white p-5 sm:p-7 max-w-3xl" style="border-color: var(--ink);">
+    <form action="{{ route('department.store') }}" method="POST">
+        @csrf
 
-</body>
+        <div class="mb-7">
+            <label class="fld-label" for="dept_name">01 /// Department Name *</label>
+            <input type="text" id="dept_name" name="dept_name" value="{{ old('dept_name') }}" required
+                   class="fld-input" placeholder="e.g. Finance">
+            @error('dept_name')
+                <div class="fld-error">[ ERR ] {{ $message }}</div>
+            @enderror
+        </div>
 
-</html>
+        <div class="flex flex-wrap gap-2 border-t-2 border-black pt-5" style="border-color: var(--ink);">
+            <button type="submit" class="btn btn-primary">Save Record</button>
+            <a href="{{ route('department.index') }}" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+@endsection

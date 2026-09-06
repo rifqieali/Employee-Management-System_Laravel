@@ -1,111 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Employee Management System</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-</head>
+@section('title', 'Departments /// EMS')
+@section('masthead', 'Departments')
+@section('doc-id', 'DOC / DEPT-002')
+@section('doc-meta')/// INDEX /// TOTAL: {{ $departments->total() }} ///@endsection
 
-<body>
-
-<div class="container mx-auto mt-10 mb-10 px-10">
-    <div class="grid grid-cols-8 gap-4 mb-4 p-5">
-        <div class="col-span-4 mt-2">
-            <h1 class="text-3xl font-bold">
-                DAFTAR DEPARTMENT
-            </h1>
-        </div>
-        <div class="col-span-4">
-            <div class="flex justify-end">
-                <a href="{{ route('department.create') }}"
-                   class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                   id="add-department-btn">Add Department</a>
-            </div>
-        </div>
+@section('content')
+{{-- /// SECTION HEADER --}}
+<div class="grid grid-cols-12 gap-4 items-end mb-5">
+    <div class="col-span-12 md:col-span-8">
+        <p class="font-micro text-[11px] mb-1"><span style="color: var(--red);">///</span> 002 /// ORG UNITS</p>
+        <h2 class="font-macro" style="font-size: clamp(1.6rem, 3.5vw, 2.6rem);">Daftar Department</h2>
     </div>
-    <div class="bg-white p-5 rounded shadow-sm">
-        <!-- Notifikasi menggunakan flash session data -->
-        @if (session('success'))
-            <div class="p-3 rounded bg-green-500 text-green-100 mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="p-3 rounded bg-red-500 text-red-100 mb-4">
-                {{ session('error') }}
-            </div>
-        @endif
-        <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        No
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Department Name
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Total Employees
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Action
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                @forelse ($departments as $department)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                        <td class="px-6 py-4">
-                            {{ $loop->iteration + ($departments->currentPage() - 1) * $departments->perPage() }}
-                        </td>
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            {{ $department->dept_name }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $department->employees_count ?? $department->employees->count() }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <form onsubmit="return confirm('Apakah Anda Yakin ?');"
-                                  action="{{ route('department.destroy', $department) }}" method="POST">
-
-                                @csrf
-                                @method('DELETE')
-                                <a href="{{ route('department.show', $department) }}" id="{{ $department->id }}-show-btn"
-                                   class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out">View</a>
-
-                                <a href="{{ route('department.edit', $department) }}" id="{{ $department->id }}-edit-btn"
-                                   class="inline-block px-6 py-2.5 bg-yellow-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-yellow-600 hover:shadow-lg focus:bg-yellow-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-700 active:shadow-lg transition duration-150 ease-in-out">Edit</a>
-
-                                <button type="submit"
-                                        class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
-                                        id="{{ $department->id }}-delete-btn">Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td class="text-center text-sm text-gray-900 px-6 py-4 whitespace-nowrap" colspan="4">
-                            Data Empty
-                        </td>
-                    </tr>
-                @endforelse
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-
-    <div class="mt-3">
-        {{ $departments->links() }}
+    <div class="col-span-12 md:col-span-4 flex md:justify-end">
+        <a href="{{ route('department.create') }}" class="btn btn-primary" id="add-department-btn">+ Add Department</a>
     </div>
 </div>
 
-</body>
-</html>
+{{-- /// DATA TABLE --}}
+<div class="border-2 border-black overflow-x-auto bg-white" style="border-color: var(--ink);">
+    <table class="w-full text-sm text-left">
+        <thead class="tbl-head">
+            <tr>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">No</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Department Name</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Total Employees</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap sticky right-0" style="background: var(--paper-dim);">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($departments as $department)
+                <tr class="tbl-row">
+                    <td class="px-4 py-3 whitespace-nowrap font-micro text-[12px]">{{ $departments->firstItem() + $loop->index }}</td>
+                    <td class="px-4 py-3 font-semibold">{{ $department->dept_name }}</td>
+                    <td class="px-4 py-3 whitespace-nowrap font-micro text-[12px]">{{ $department->employees_count ?? $department->employees->count() }} PAX</td>
+                    <td class="px-4 py-3 sticky right-0 bg-white" style="box-shadow: inset 1px 0 0 0 var(--line);">
+                        <form onsubmit="return confirm('Apakah Anda Yakin ?');"
+                              action="{{ route('department.destroy', $department) }}" method="POST"
+                              class="flex items-center gap-1.5 whitespace-nowrap">
+                            @csrf
+                            @method('DELETE')
+                            <a href="{{ route('department.show', $department) }}" id="{{ $department->id }}-show-btn" class="btn-outline-sm">View</a>
+                            <a href="{{ route('department.edit', $department) }}" id="{{ $department->id }}-edit-btn" class="btn-outline-sm" style="background: var(--ink); color: var(--paper);">Edit</a>
+                            <button type="submit" class="btn-danger-sm" id="{{ $department->id }}-delete-btn">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" class="px-4 py-10 text-center">
+                        <p class="font-micro text-[11px] mb-2">[ EMPTY ]</p>
+                        <p class="text-lg font-bold uppercase tracking-tight mb-4">No departments found.</p>
+                        <a href="{{ route('department.create') }}" class="btn btn-primary">+ Add Department</a>
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+{{-- /// PAGINATION --}}
+<div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 justify-between">
+    <p class="font-micro text-[11px]">PG {{ $departments->currentPage() }} / {{ $departments->lastPage() }} /// {{ $departments->total() }} RECORDS</p>
+    <div>{{ $departments->links() }}</div>
+</div>
+@endsection
