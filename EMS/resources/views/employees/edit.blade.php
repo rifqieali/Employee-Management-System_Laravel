@@ -1,253 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Edit Employee - {{ $employee->full_name }}</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-</head>
+@section('title', 'Edit Employee /// EMS')
+@section('masthead', 'Amendment')
+@section('doc-id', 'DOC / EMP-004')
+@section('doc-meta')/// FORM /// UPDATE /// ID: {{ $employee->id }} ///@endsection
 
-<body>
-
-<div class="container mx-auto mt-10 mb-10 px-10">
-    <div class="grid grid-cols-8 gap-4 p-5">
-        <div class="col-span-4 mt-2">
-            <h1 class="text-3xl font-bold">
-                EDIT EMPLOYEE
-            </h1>
-        </div>
-        <div class="col-span-4">
-
-        </div>
+@section('content')
+<div class="grid grid-cols-12 gap-4 items-end mb-5">
+    <div class="col-span-12">
+        <p class="font-micro text-[11px] mb-1"><span style="color: var(--red);">///</span> 004 /// RECORD AMENDMENT /// ID-{{ $employee->id }}</p>
+        <h2 class="font-macro" style="font-size: clamp(1.6rem, 3.5vw, 2.6rem);">Edit Employee</h2>
     </div>
-    <div class="bg-white p-5 rounded shadow-sm">
-        <form action="{{ route('employee.update', $employee) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="mb-5">
-                <label for="first_name">First Name</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="first_name" value="{{ old('first_name', $employee->first_name) }}" required>
-
-                <!-- error message untuk first_name -->
-                @error('first_name')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="mb-5">
-                <label for="last_name">Last Name</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="last_name" value="{{ old('last_name', $employee->last_name) }}" required>
-
-                <!-- error message untuk last_name -->
-                @error('last_name')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mb-5">
-                <label for="gender">Gender</label>
-                <select class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                    <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
-                </select>
-
-                <!-- error message untuk gender -->
-                @error('gender')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mb-5">
-                <label for="title">Title</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="title" value="{{ old('title') }}" required>
-
-                <!-- error message untuk title -->
-                @error('title')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mb-5">
-                <label for="email">Email</label>
-                <input type="email" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="email" value="{{ old('email') }}" required>
-
-                <!-- error message untuk email -->
-                @error('email')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="mb-5">
-                <label for="emp_status">Status</label>
-                <input type="text" class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="emp_status" value="{{ old('emp_status', $employee->emp_status) }}" placeholder="e.g. Active" required>
-
-                <!-- error message untuk emp_status -->
-                @error('emp_status')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="mb-5">
-                <label for="department_id">Department</label>
-                <select class="
-                    form-control
-                    block
-                    w-full
-                    px-3
-                    py-1.5
-                    text-base
-                    font-normal
-                    text-gray-700
-                    bg-white bg-clip-padding
-                    border border-solid border-gray-300
-                    rounded-full
-                    transition
-                    ease-in-out
-                    m-0
-                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                  " name="department_id" required>
-                  <option value="">Select Department</option>
-                  @foreach ($departments as $dept)
-                    <option value="{{ $dept->id }}" {{ old('department_id', $employee->department_id) == $dept->id ? 'selected' : '' }}>
-                        {{ $dept->dept_name }}
-                    </option>
-                  @endforeach
-                </select>
-
-                <!-- error message untuk department_id -->
-                @error('department_id')
-                <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            <div class="mt-3">
-                <button type="submit"
-                        class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                    Save Changes
-                </button>
-                <a href="{{ route('employee.index') }}"
-                   class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">back</a>
-            </div>
-
-        </form>
-
-    </div>
-
 </div>
 
+<div class="border-2 border-black bg-white p-5 sm:p-7 max-w-3xl" style="border-color: var(--ink);">
+    <form action="{{ route('employee.update', $employee) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-</body>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+            <div>
+                <label class="fld-label" for="first_name">01 /// First Name *</label>
+                <input type="text" id="first_name" name="first_name" value="{{ old('first_name', $employee->first_name) }}" required
+                       class="fld-input" autocomplete="given-name">
+                @error('first_name')
+                    <div class="fld-error">[ ERR ] {{ $message }}</div>
+                @enderror
+            </div>
+            <div>
+                <label class="fld-label" for="last_name">02 /// Last Name *</label>
+                <input type="text" id="last_name" name="last_name" value="{{ old('last_name', $employee->last_name) }}" required
+                       class="fld-input" autocomplete="family-name">
+                @error('last_name')
+                    <div class="fld-error">[ ERR ] {{ $message }}</div>
+                @enderror
+            </div>
+        </div>
 
-</html>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+            <div>
+                <label class="fld-label" for="gender">03 /// Gender *</label>
+                <select id="gender" name="gender" required class="fld-input">
+                    <option value="">-- Select Gender --</option>
+                    <option value="Male" {{ old('gender', $employee->gender) == 'Male' ? 'selected' : '' }}>Male</option>
+                    <option value="Female" {{ old('gender', $employee->gender) == 'Female' ? 'selected' : '' }}>Female</option>
+                </select>
+                @error('gender')
+                    <div class="fld-error">[ ERR ] {{ $message }}</div>
+                @enderror
+            </div>
+            <div>
+                <label class="fld-label" for="title">04 /// Title *</label>
+                <input type="text" id="title" name="title" value="{{ old('title', $employee->title) }}" required
+                       class="fld-input">
+                @error('title')
+                    <div class="fld-error">[ ERR ] {{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <label class="fld-label" for="email">05 /// Email *</label>
+            <input type="email" id="email" name="email" value="{{ old('email', $employee->email) }}" required
+                   class="fld-input" autocomplete="email">
+            @error('email')
+                <div class="fld-error">[ ERR ] {{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-7">
+            <div>
+                <label class="fld-label" for="emp_status">06 /// Status *</label>
+                <input type="text" id="emp_status" name="emp_status" value="{{ old('emp_status', $employee->emp_status) }}" required
+                       class="fld-input" placeholder="e.g. Active">
+                @error('emp_status')
+                    <div class="fld-error">[ ERR ] {{ $message }}</div>
+                @enderror
+            </div>
+            <div>
+                <label class="fld-label" for="department_id">07 /// Department *</label>
+                <select id="department_id" name="department_id" required class="fld-input">
+                    <option value="">-- Select Department --</option>
+                    @foreach ($departments as $dept)
+                        <option value="{{ $dept->id }}" {{ old('department_id', $employee->department_id) == $dept->id ? 'selected' : '' }}>
+                            {{ $dept->dept_name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('department_id')
+                    <div class="fld-error">[ ERR ] {{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 border-t-2 border-black pt-5" style="border-color: var(--ink);">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{{ route('employee.index') }}" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+@endsection
