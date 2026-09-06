@@ -17,11 +17,9 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('gender');
             $table->string('title');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('emp_status');
-            $table->string('emp_type');
             $table->foreignId('department_id')->constrained();
-            $table->text('job_desc');
             $table->timestamps();
         });
     }

@@ -9,7 +9,6 @@ class Department extends Model
 {
     protected $fillable = [
         'dept_name',
-        'division',
     ];
 
     public function employees(): HasMany
