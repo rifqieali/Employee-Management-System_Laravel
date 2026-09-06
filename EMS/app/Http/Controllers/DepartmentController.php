@@ -12,8 +12,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::latest()->paginate(10);
-        return view('departments.index', compact('departments'));
+        $departments = Department::withCount('employees')->latest('id')->paginate(10);
+        return view('department', compact('departments'));
     }
 
     /**
@@ -21,7 +21,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        return view('departments.create');
     }
 
     /**
@@ -29,7 +29,18 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge([
+            'dept_name' => $request->dept_name ?? $request->department,
+        ]);
+
+        $validated = $request->validate([
+            'dept_name' => 'required|string|max:255',
+        ]);
+
+        Department::create($validated);
+
+        return redirect()->route('department.index')
+            ->with('success', 'Department created successfully.');
     }
 
     /**
@@ -37,7 +48,8 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        //
+        $department->load('employees');
+        return view('departments.show', compact('department'));
     }
 
     /**
@@ -45,7 +57,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        //
+        return view('departments.edit', compact('department'));
     }
 
     /**
@@ -53,7 +65,18 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $request->merge([
+            'dept_name' => $request->dept_name ?? $request->department,
+        ]);
+
+        $validated = $request->validate([
+            'dept_name' => 'required|string|max:255',
+        ]);
+
+        $department->update($validated);
+
+        return redirect()->route('department.index')
+            ->with('success', 'Department updated successfully.');
     }
 
     /**
@@ -61,6 +84,13 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        if ($department->employees()->exists()) {
+            return redirect()->route('department.index')
+                ->with('error', 'Cannot delete department because it still has associated employees.');
+        }
+
+        $department->delete();
+        return redirect()->route('department.index')
+            ->with('success', 'Department deleted successfully.');
     }
 }
