@@ -34,6 +34,16 @@
                 {{ session('success') }}
             </div>
         @endif
+        <form method="GET" action="{{ route('employee.index') }}" class="flex gap-2 mb-4">
+            <input type="text" name="search" value="{{ $search ?? request('search') }}" placeholder="Search name, email, title, status, department..."
+                   class="flex-1 px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button type="submit"
+                    class="px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 transition duration-150 ease-in-out">Search</button>
+            @if ($search ?? request('search'))
+                <a href="{{ route('employee.index') }}"
+                   class="px-6 py-2.5 bg-gray-300 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-400 transition duration-150 ease-in-out">Reset</a>
+            @endif
+        </form>
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -68,10 +78,10 @@
                 @forelse ($employees as $employee)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                         <td class="px-6 py-4">
-                            {{ $loop->iteration + ($employees->currentPage() - 1) * $employees->perPage() }}
+                            {{ $employees->firstItem() + $loop->index + ($employees->currentPage() - 1) * $employees->perPage() }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $employee->full_name }}
+                            {{ $employee->full_first_name }} {{ $employee->last_name  }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $employee->gender }}
@@ -86,7 +96,13 @@
                             {{ $employee->emp_status }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $employee->department->dept_name ?? '-' }}
+                            {{ $employee->contract }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $employee->department }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $employee->jobdesc }}
                         </td>
                         <td class="px-6 py-4">
                             <form onsubmit="return confirm('Apakah Anda Yakin ?');"
